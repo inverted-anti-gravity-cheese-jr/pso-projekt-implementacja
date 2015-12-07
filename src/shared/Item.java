@@ -1,5 +1,7 @@
 package shared;
 
+import java.util.Calendar;
+
 public class Item {
     protected String ownerName;
     protected String name;
@@ -7,9 +9,10 @@ public class Item {
     protected double currentBid;
     protected String currentBiddersName;
     protected int remainingTime;
-    protected  BiddingStrategyValidator validator;
+    protected BiddingStrategyValidator validator;
+    protected Calendar startDate;
 
-    public Item(String ownerName, String name, String description, double currentBid, String currentBiddersName, int remainingTime, BiddingStrategyValidator validator) {
+    public Item(String ownerName, String name, String description, double currentBid, String currentBiddersName, int remainingTime, BiddingStrategyValidator validator, Calendar startDate) {
         this.ownerName = ownerName;
         this.name = name;
         this.description = description;
@@ -17,6 +20,11 @@ public class Item {
         this.currentBiddersName = currentBiddersName;
         this.remainingTime = remainingTime;
         this.validator = validator;
+        this.startDate = startDate;
+    }
+
+    public Calendar getStartDate() {
+        return startDate;
     }
 
     public String getName() {
@@ -66,6 +74,7 @@ public class Item {
                 ", currentBiddersName='" + currentBiddersName + '\'' +
                 ", remainingTime=" + remainingTime +
                 ", validator=" + validator +
+                ", startDate=" + startDate +
                 '}';
     }
 

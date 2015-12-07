@@ -7,10 +7,7 @@ import shared.EnglishAuctionBiddingStrategyValidator;
 import shared.Item;
 
 import java.rmi.RemoteException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AuctionServerImpl implements IAuctionServer {
 
@@ -26,7 +23,7 @@ public class AuctionServerImpl implements IAuctionServer {
         else {
             validator = new DutchAuctionBiddingStrategyValidator();
         }
-        Item newItem = new Item(ownerName, itemName, itemDesc, startBid, null, auctionTime, validator);
+        Item newItem = new Item(ownerName, itemName, itemDesc, startBid, null, auctionTime, validator, Calendar.getInstance());
         if(items.contains(newItem)) {
             throw new RemoteException("Item with that name already exists!");
         }
@@ -42,7 +39,7 @@ public class AuctionServerImpl implements IAuctionServer {
         if(item.validateBid(bid)) {
             item.bid(bidderName, bid);
             System.out.println("Uzytkownik " + item.getCurrentBiddersName() + " podniosl stawke do " + item.getCurrentBid() + " pozostaly czas " + item.getRemainingTime() + ".");
-            notifyObservers(item);
+            notifyObservers(item, "rebid");
         }
         else {
             String message;
@@ -77,9 +74,16 @@ public class AuctionServerImpl implements IAuctionServer {
         }
     }
 
-    protected void notifyObservers(Item item) throws RemoteException {
+    public void closeAuction(String itemName) throws RemoteException {
+        Item item = findItem(itemName);
+        notifyObservers(item, "close");
+        Server.getInstance().getItemList().remove(item);
+        listeners.remove(itemName);
+    }
+
+    protected void notifyObservers(Item item, String action) throws RemoteException {
         for(IAuctionListener client: listeners.get(item.getName())) {
-            client.update(item);
+            client.update(item, action);
         }
     }
 

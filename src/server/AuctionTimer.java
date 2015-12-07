@@ -1,0 +1,37 @@
+package server;
+
+import shared.Item;
+
+import java.rmi.RemoteException;
+import java.util.Calendar;
+import java.util.List;
+
+public class AuctionTimer implements Runnable {
+
+    public AuctionServerImpl server;
+
+    public AuctionTimer(AuctionServerImpl server) {
+        this.server = server;
+    }
+
+    @Override
+    public void run() {
+        List<Item> items = Server.getInstance().getItemList();
+        for(Item i: items) {
+            Calendar endDate = ((Calendar) i.getStartDate().clone());
+            endDate.add(Calendar.MINUTE, i.getRemainingTime());
+            if(endDate.before(Calendar.getInstance())) {
+                try {
+                    server.closeAuction(i.getName());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}

@@ -1,6 +1,7 @@
 package client;
 
 import server.IAuctionServer;
+import shared.AuctionListenerFactory;
 import shared.AuctionType;
 import shared.Item;
 
@@ -16,8 +17,9 @@ public class ClientMain {
 
         // tworzenie klientów
 
-        IAuctionListener klient1 = new AuctionListenerImpl();
-        IAuctionListener klient2 = new AuctionListenerImpl();
+        AuctionListenerFactory factory = new AuctionListenerFactory();
+        IAuctionListener klient1 = factory.createInstance();
+        IAuctionListener klient2 = factory.createInstance();
 
         // połączenie z serwerem
 

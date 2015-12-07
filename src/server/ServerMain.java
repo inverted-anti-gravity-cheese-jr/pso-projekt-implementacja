@@ -1,15 +1,22 @@
 package server;
 
+import shared.AuctionServerFactory;
+
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class SerialMain {
+public class ServerMain {
     public static void main(String[] args) {
         // utworzenie serwera
-        IAuctionServer serwer = new AuctionServerImpl();
+        AuctionServerFactory factory = new AuctionServerFactory();
+        IAuctionServer serwer = factory.createInstance();
+
+        // sprawdzanie czasu aukcji
+        AuctionTimer timer = new AuctionTimer((AuctionServerImpl) serwer);
+        new Thread(timer).start();
 
         // uruchomienie daemona serwera
         try {
