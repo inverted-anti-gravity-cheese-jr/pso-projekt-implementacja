@@ -17,20 +17,22 @@ public class AuctionTimer implements Runnable {
     @Override
     public void run() {
         List<Item> items = Server.getInstance().getItemList();
-        for(Item i: items) {
-            Calendar endDate = ((Calendar) i.getStartDate().clone());
-            endDate.add(Calendar.MINUTE, i.getRemainingTime());
-            if(endDate.before(Calendar.getInstance())) {
+        while (true) {
+            for (Item i : items) {
+                Calendar endDate = ((Calendar) i.getStartDate().clone());
+                endDate.add(Calendar.SECOND, i.getRemainingTime());
+                if (endDate.before(Calendar.getInstance())) {
+                    try {
+                        server.closeAuction(i.getName());
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
                 try {
-                    server.closeAuction(i.getName());
-                } catch (RemoteException e) {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }

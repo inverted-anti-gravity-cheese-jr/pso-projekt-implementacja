@@ -62,14 +62,24 @@ public class AuctionServerImpl implements IAuctionServer {
     public void registerListener(IAuctionListener al, String itemName) throws RemoteException {
         if(findItem(itemName) != null) {
             if(!listeners.containsKey(itemName)) {
-                listeners.put(itemName, Arrays.asList(al));
+                List<IAuctionListener> tmp = new ArrayList<>();
+                tmp.add(al);
+                listeners.put(itemName, tmp);
             }
             else {
-                List<IAuctionListener> listn = (List<IAuctionListener>) this.listeners.get(itemName);
-                if(!listn.contains(al)) {
+                List<IAuctionListener> listn = (List<IAuctionListener>) listeners.get(itemName);
+                boolean contains = false;
+                for(IAuctionListener list: listn) {
+                    if (list == al) {
+                        contains = true;
+                        break;
+                    }
+                }
+                if(!contains) {
                     listn.add(al);
                 }
             }
+
             System.out.println("Dołączono obserwatora do przedmiotu " + itemName);
         }
     }

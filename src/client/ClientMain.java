@@ -3,6 +3,7 @@ package client;
 import server.IAuctionServer;
 import shared.AuctionListenerFactory;
 import shared.AuctionType;
+import shared.Constants;
 import shared.Item;
 
 import java.rmi.Naming;
@@ -11,7 +12,7 @@ import java.rmi.RemoteException;
 
 public class ClientMain {
 
-    public static String ADRES_SERWERA = "rmi://localhost/serwerAukcyjny";
+    public static final String ADRES_SERWERA = "rmi://" + Constants.HOSTNAME + "/serwerAukcyjny";
 
     public static void main(String[] args) {
 
@@ -52,6 +53,21 @@ public class ClientMain {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+
+        System.out.println("Oczekiwanie na zamkniecie aukcji");
+
+        new Thread() {
+            @Override
+            public void run() {
+                while(true) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
 
     }
 
