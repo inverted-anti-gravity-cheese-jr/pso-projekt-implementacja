@@ -41,7 +41,13 @@ public class ClientMain {
         }
 
         // przebijanie
-
+        try {
+			placeBid(serwer, klient1, "Klient1", "ksiazka", 10.0);
+			placeBid(serwer, klient2, "Klient2", "tablet", 200.0);
+			placeBid(serwer, klient1, "Klient1", "tablet", 300.0);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 
     }
 
