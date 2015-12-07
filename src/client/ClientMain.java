@@ -6,6 +6,9 @@ public class ClientMain {
 
         // tworzenie klientów
 
+        IAuctionListener klient1 = new AuctionListenerImpl();
+        IAuctionListener klient2 = new AuctionListenerImpl();
+
         // wystawianie przedmiotów
 
     }

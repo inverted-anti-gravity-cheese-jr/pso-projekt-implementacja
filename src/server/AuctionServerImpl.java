@@ -7,7 +7,6 @@ import shared.EnglishAuctionBiddingStrategyValidator;
 import shared.Item;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +60,7 @@ public class AuctionServerImpl implements IAuctionServer {
         if(findItem(itemName) != null) {
             listeners.put(itemName, al);
         }
+        System.out.println("Dołączono obserwatora do przedmiotu " + itemName);
     }
 
     protected Item findItem(String itemName) {
