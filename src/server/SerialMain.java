@@ -6,5 +6,6 @@ public class SerialMain {
         IAuctionServer serwer = new AuctionServerImpl();
 
         // TODO: uruchomienie daemona serwera
+        //babaab
     }
 }
