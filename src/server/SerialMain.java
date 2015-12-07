@@ -5,6 +5,6 @@ public class SerialMain {
         // utworzenie serwera
         IAuctionServer serwer = new AuctionServerImpl();
 
-        // uruchomienie demona serwera
+        // TODO: uruchomienie daemona serwera
     }
 }

@@ -9,7 +9,7 @@ public class ClientMain {
         IAuctionListener klient1 = new AuctionListenerImpl();
         IAuctionListener klient2 = new AuctionListenerImpl();
 
-        // wystawianie przedmiotów
+        // TODO: wystawianie przedmiotów
 
     }
 }

@@ -37,6 +37,8 @@ public class AuctionServerImpl implements IAuctionServer {
         Item item = findItem(itemName);
         if(item.validateBid(bid)) {
             item.bid(bidderName, bid);
+            // TODO: powiadom użytkowników
+
         }
         else {
             String message;
