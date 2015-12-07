@@ -7,13 +7,14 @@ import shared.EnglishAuctionBiddingStrategyValidator;
 import shared.Item;
 
 import java.rmi.RemoteException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AuctionServerImpl implements IAuctionServer {
 
-    protected Map<String, IAuctionListener> listeners = new HashMap<>();
+    protected Map<String, List<IAuctionListener>> listeners = new HashMap<>();
 
     @Override
     public void placeItemForBid(String ownerName, String itemName, String itemDesc, double startBid, int auctionTime, String auctionType) throws RemoteException {
@@ -29,7 +30,10 @@ public class AuctionServerImpl implements IAuctionServer {
         if(items.contains(newItem)) {
             throw new RemoteException("Item with that name already exists!");
         }
-        items.add(newItem);
+        else {
+            items.add(newItem);
+            System.out.println("Wystawiono przedmiot " + newItem + " na aukcje typu " + newItem.getValidator().getClass().getName() + ".");
+        }
     }
 
     @Override
@@ -37,8 +41,8 @@ public class AuctionServerImpl implements IAuctionServer {
         Item item = findItem(itemName);
         if(item.validateBid(bid)) {
             item.bid(bidderName, bid);
-            // TODO: powiadom użytkowników
-
+            System.out.println("Uzytkownik " + item.getCurrentBiddersName() + " podniosl stawke do " + item.getCurrentBid() + " pozostaly czas " + item.getRemainingTime() + ".");
+            notifyObservers(item);
         }
         else {
             String message;
@@ -60,9 +64,23 @@ public class AuctionServerImpl implements IAuctionServer {
     @Override
     public void registerListener(IAuctionListener al, String itemName) throws RemoteException {
         if(findItem(itemName) != null) {
-            listeners.put(itemName, al);
+            if(!listeners.containsKey(itemName)) {
+                listeners.put(itemName, Arrays.asList(al));
+            }
+            else {
+                List<IAuctionListener> listn = (List<IAuctionListener>) this.listeners.get(itemName);
+                if(!listn.contains(al)) {
+                    listn.add(al);
+                }
+            }
+            System.out.println("Dołączono obserwatora do przedmiotu " + itemName);
         }
-        System.out.println("Dołączono obserwatora do przedmiotu " + itemName);
+    }
+
+    protected void notifyObservers(Item item) throws RemoteException {
+        for(IAuctionListener client: listeners.get(item.getName())) {
+            client.update(item);
+        }
     }
 
     protected Item findItem(String itemName) {

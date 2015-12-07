@@ -40,6 +40,22 @@ public class Item {
         return validator.validate(this, bid);
     }
 
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getCurrentBiddersName() {
+        return currentBiddersName;
+    }
+
+    public int getRemainingTime() {
+        return remainingTime;
+    }
+
     @Override
     public String toString() {
         return "Item{" +
