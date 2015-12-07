@@ -23,6 +23,7 @@ public class AuctionTimer implements Runnable {
                 endDate.add(Calendar.SECOND, i.getRemainingTime());
                 if (endDate.before(Calendar.getInstance())) {
                     try {
+                        System.out.println("Zamykam aukcje " + i + ", upłynął czas.");
                         server.closeAuction(i.getName());
                     } catch (RemoteException e) {
                         e.printStackTrace();
