@@ -10,16 +10,21 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class ServerMain {
     public static void main(String[] args) {
+
+        System.out.println("Tworzę instancję serwera");
+
         // utworzenie serwera
         AuctionServerFactory factory = new AuctionServerFactory();
         IAuctionServer serwer = factory.createInstance();
 
         // sprawdzanie czasu aukcji
+        System.out.println("Tworzę licznik czasowy");
         AuctionTimer timer = new AuctionTimer((AuctionServerImpl) serwer);
         new Thread(timer).start();
 
         // uruchomienie daemona serwera
         try {
+            System.out.println("Uruchamiam serwer");
             IAuctionServer stub =
                     (IAuctionServer) UnicastRemoteObject.exportObject(serwer);
             Registry registry = LocateRegistry.getRegistry();

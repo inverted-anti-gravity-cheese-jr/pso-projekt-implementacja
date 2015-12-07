@@ -15,8 +15,9 @@ public class ClientMain {
 
     public static void main(String[] args) {
 
-        // tworzenie klientów
+        System.out.println("Tworzę instancje klientów");
 
+        // tworzenie klientów
         AuctionListenerFactory factory = new AuctionListenerFactory();
         IAuctionListener klient1 = factory.createInstance();
         IAuctionListener klient2 = factory.createInstance();
@@ -25,6 +26,7 @@ public class ClientMain {
 
         IAuctionServer serwer = null;
         try {
+            System.out.println("Łączę się z serwerem");
             Remote ro = Naming.lookup(ADRES_SERWERA);
             serwer = (IAuctionServer) ro;
         } catch (Exception e) {
@@ -33,6 +35,7 @@ public class ClientMain {
 
         // wystawianie przedmiotów
         try {
+            System.out.println("Wystawiam dwa przedmioty");
             placeItemForBid(serwer, "owner", "ksiazka", "Ksiazka", 1.0, 5, AuctionType.ENGLISH_AUCTION);
             placeItemForBid(serwer, "owner", "tablet", "Tablet", 100.0, 10, AuctionType.ENGLISH_AUCTION);
         }
@@ -42,6 +45,7 @@ public class ClientMain {
 
         // przebijanie
         try {
+            System.out.println("Licytuję");
 			placeBid(serwer, klient1, "Klient1", "ksiazka", 10.0);
 			placeBid(serwer, klient2, "Klient2", "tablet", 200.0);
 			placeBid(serwer, klient1, "Klient1", "tablet", 300.0);
