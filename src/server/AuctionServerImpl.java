@@ -7,9 +7,14 @@ import shared.EnglishAuctionBiddingStrategyValidator;
 import shared.Item;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AuctionServerImpl implements IAuctionServer {
+
+    protected Map<String, IAuctionListener> listeners = new HashMap<>();
 
     @Override
     public void placeItemForBid(String ownerName, String itemName, String itemDesc, double startBid, int auctionTime, String auctionType) throws RemoteException {
@@ -53,7 +58,9 @@ public class AuctionServerImpl implements IAuctionServer {
 
     @Override
     public void registerListener(IAuctionListener al, String itemName) throws RemoteException {
-        
+        if(findItem(itemName) != null) {
+            listeners.put(itemName, al);
+        }
     }
 
     protected Item findItem(String itemName) {

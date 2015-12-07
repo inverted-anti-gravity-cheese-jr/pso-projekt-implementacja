@@ -1,8 +1,6 @@
 package shared;
 
-import java.util.Observable;
-
-public class Item extends Observable {
+public class Item {
     protected String ownerName;
     protected String name;
     protected String description;
@@ -40,6 +38,19 @@ public class Item extends Observable {
 
     public boolean validateBid(double bid) {
         return validator.validate(this, bid);
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "ownerName='" + ownerName + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", currentBid=" + currentBid +
+                ", currentBiddersName='" + currentBiddersName + '\'' +
+                ", remainingTime=" + remainingTime +
+                ", validator=" + validator +
+                '}';
     }
 
     @Override
