@@ -1,5 +1,6 @@
 package server;
 
+import shared.AbstractAuctionComponentsFactory;
 import shared.AuctionServerFactory;
 import shared.Constants;
 
@@ -17,7 +18,7 @@ public class ServerMain {
         System.out.println("Tworzę instancję serwera");
 
         // utworzenie serwera
-        AuctionServerFactory factory = new AuctionServerFactory();
+        AbstractAuctionComponentsFactory<IAuctionServer> factory = new AuctionServerFactory();
         IAuctionServer serwer = factory.createInstance();
 
         // uruchomienie daemona serwera
@@ -29,8 +30,7 @@ public class ServerMain {
             // sprawdzanie czasu aukcji
             System.out.println("Tworzę licznik czasowy");
             AuctionTimerImpl timer = new AuctionTimerImpl((AuctionServerImpl) serwer);
-            //Naming.bind("serwerCzasowy", timer);
-
+            
             IAuctionTimer timStub =
                     (IAuctionTimer) UnicastRemoteObject.exportObject(timer, 0);
             Registry registry = LocateRegistry.getRegistry();
