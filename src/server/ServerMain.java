@@ -25,10 +25,18 @@ public class ServerMain {
             System.out.println("Uruchamiam serwer");
             System.setProperty("java.rmi.server.hostname", Constants.HOSTNAME);
             Naming.bind("serwerAukcyjny", serwer);
-//            IAuctionServer stub =
-//                    (IAuctionServer) UnicastRemoteObject.exportObject(serwer);
-//            Registry registry = LocateRegistry.getRegistry();
-//            registry.rebind("serwerAukcyjny", stub);
+
+            // sprawdzanie czasu aukcji
+            System.out.println("Tworzę licznik czasowy");
+            AuctionTimerImpl timer = new AuctionTimerImpl((AuctionServerImpl) serwer);
+            //Naming.bind("serwerCzasowy", timer);
+
+            IAuctionTimer timStub =
+                    (IAuctionTimer) UnicastRemoteObject.exportObject(timer, 0);
+            Registry registry = LocateRegistry.getRegistry();
+            registry.rebind("serwerCzasowy", timStub);
+
+            timStub.startTimer();
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
@@ -36,10 +44,5 @@ public class ServerMain {
         } catch (AlreadyBoundException e) {
             e.printStackTrace();
         }
-
-        // sprawdzanie czasu aukcji
-        System.out.println("Tworzę licznik czasowy");
-        AuctionTimer timer = new AuctionTimer((AuctionServerImpl) serwer);
-        new Thread(timer).start();
     }
 }

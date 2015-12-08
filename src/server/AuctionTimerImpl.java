@@ -6,16 +6,16 @@ import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.List;
 
-public class AuctionTimer implements Runnable {
+public class AuctionTimerImpl implements IAuctionTimer {
 
     public AuctionServerImpl server;
 
-    public AuctionTimer(AuctionServerImpl server) {
+    public AuctionTimerImpl(AuctionServerImpl server) {
         this.server = server;
     }
 
     @Override
-    public void run() {
+    public void startTimer() throws RemoteException {
         List<Item> items = Server.getInstance().getItemList();
         while (true) {
             for (Item i : items) {

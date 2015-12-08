@@ -4,7 +4,6 @@ import server.IAuctionServer;
 import shared.AuctionListenerFactory;
 import shared.AuctionType;
 import shared.Constants;
-import shared.Item;
 
 import java.rmi.Naming;
 import java.rmi.Remote;
